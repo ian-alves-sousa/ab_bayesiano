@@ -1,0 +1,1 @@
+source "/d/Comunidade DS/teste_a_b/pa_bayseian/bay/Scripts/activate" 
