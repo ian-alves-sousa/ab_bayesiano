@@ -1,7 +1,7 @@
 # Teste A/B Bayesiano
 
 <div align="center">
-<img src="img/ab-testing-split-min.jpg" />
+<img src="img/ferramentas-teste-wordpress-ab-1024x512.png" />
 </div>
 
 # Introdução
