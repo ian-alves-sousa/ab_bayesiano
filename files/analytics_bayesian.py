@@ -88,7 +88,7 @@ def bayesian_inference(df1):
 
 
 def animate(i):
-    data = pd.read_csv('data_experiment.csv')
+    data = pd.read_csv('../data/data_experiment.csv')
 
     # dtypes
     data['click'] = data['click'].astype('int')
