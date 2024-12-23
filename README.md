@@ -1,4 +1,4 @@
-# Teste A/B - Métodos de Preenchimento
+# Teste A/B Bayesiano
 
 <div align="center">
 <img src="img/ab-testing-split-min.jpg" />
@@ -215,17 +215,17 @@ Assim, precisamos definir qual teste será usado, e para foi utilizado esse guia
 <img src="img/Testes de Hipóteses-2.png" />
 </div>
 
-Através do diagrama utilizaremos o Two Sample t-test, para isso os teste de Parametric Assumption foram feitos. 
+Através do diagrama utilizaremos o Two Sample t-test, para isso os teste de Parametric Assumption foram feitos.
 
 O resultado é um p-valor, onde se o p-valor for menor que o nível de significância, a hipótese nula é rejeitada, se for maior, significa que com esses dados não é possível rejeitar a hipótese nula. Assim apresentamos o resultado para diferentes lifts e métricas de sucesso:
 
-| **Lift** | **Spent** | **Purchases** |
-| ------------------- | ------------------- | ------------------- |
-| 1%  | Amostras insuficientes | Amostras insuficientes |
-| 5%  | Falha | Falha |
-| 10% | A < B | Falha |
-| 15% | Falha | Falha |
-| 20% | Falha | Falha |
+| **Lift** | **Spent**              | **Purchases**          |
+| -------- | ---------------------- | ---------------------- |
+| 1%       | Amostras insuficientes | Amostras insuficientes |
+| 5%       | Falha                  | Falha                  |
+| 10%      | A < B                  | Falha                  |
+| 15%      | Falha                  | Falha                  |
+| 20%      | Falha                  | Falha                  |
 
 Com esse resultado, **não podemos rejeitar a hipótese nula na maioria dos testes**, com excessão ao de lift de 10%. Contudo, esse teste nos provou que a média de de valor gasto no preenchimento automático é **10% MENOR** que a do preenchimento manual.
 
@@ -238,9 +238,9 @@ Como nossos dados iniciais apresentam features como país, gênero e device, pod
 Os testes de hipótese nos gêneros confirmam a impressão da EDA. Essa **variável não foi influenciada pelo tipo de preenchimento**, e com os dados disponíveis não é possível provar que há uma diferenla estatística entre as métricas tanto de spent quanto de purchases entre os grupos.
 
 | **Valor** | **Lift** | **Spent** | **Purchases** |
-| ------------------- | ------------------- | ------------------- | ------------------- |
-| Feminino | Todos  | Falha | Falha |
-| Masculino | Todos  | Falha | Falha |
+| --------- | -------- | --------- | ------------- |
+| Feminino  | Todos    | Falha     | Falha         |
+| Masculino | Todos    | Falha     | Falha         |
 
 ## 6.2 Device
 
@@ -249,9 +249,9 @@ Apesar de uma impressão inicial de que o preenchimento automático apresentava 
 Onde com os dados disponíveis **não é possível provar que há uma diferença estatística** entre as métricas tanto de spent quanto de purchases entre os grupos.
 
 | **Valor** | **Lift** | **Spent** | **Purchases** |
-| ------------------- | ------------------- | ------------------- | ------------------- |
-| Site | Todos  | Falha | Falha |
-| App | Todos  | Falha | Falha |
+| --------- | -------- | --------- | ------------- |
+| Site      | Todos    | Falha     | Falha         |
+| App       | Todos    | Falha     | Falha         |
 
 ## 6.3 País
 
@@ -262,17 +262,17 @@ Contudo, no México observamos que a média de de valor gasto no preenchimento a
 Em contrapartida Espanha apresenta valores estatisticamente **10% MENORES** em spent e purchases no preenchimento automático, evidenciando que a mudança não foi efetiva nesse país e que além disso, o resultado geral pode ser sido influenciado pelo resultado das pessoas desse país.
 
 | **Valor** | **Lift** | **Spent** | **Purchases** |
-| ------------------- | ------------------- | ------------------- | ------------------- |
-| MEX | 10% | A > B | Falha |
-| USA | Todos | Falha | Falha |
-| ESP | 10% | A < B | A < B |
-| GBR | Todos | Falha | Falha |
-| TUR | Todos | Falha | Falha |
-| DEU | Todos | Falha | Falha |
-| BRA | Todos | Falha | Falha |
-| FRA | Todos | Falha | Falha |
-| AUS | Todos | Falha | Falha |
-| CAN | Todos | Falha | Falha |
+| --------- | -------- | --------- | ------------- |
+| MEX       | 10%      | A > B     | Falha         |
+| USA       | Todos    | Falha     | Falha         |
+| ESP       | 10%      | A < B     | A < B         |
+| GBR       | Todos    | Falha     | Falha         |
+| TUR       | Todos    | Falha     | Falha         |
+| DEU       | Todos    | Falha     | Falha         |
+| BRA       | Todos    | Falha     | Falha         |
+| FRA       | Todos    | Falha     | Falha         |
+| AUS       | Todos    | Falha     | Falha         |
+| CAN       | Todos    | Falha     | Falha         |
 
 # 7. Resultados de Negócio
 
