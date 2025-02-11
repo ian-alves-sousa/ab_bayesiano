@@ -118,57 +118,66 @@ A metodoligia utilizado foi adaptada para a aplicação do MAB, que após de ser
 
 # 4. Frequentista vs Bayesiano
 
-Essa análise foi focada em entender como a métrica de sucesso está distribuída entre os grupos.
+Os testes A/B são usados para comparar diferentes versões de um produto, site ou estratégia e determinar qual é mais eficaz. Existem dois principais métodos estatísticos para analisar esses testes: **Frequentista** e **Bayesiano**.
 
-## 4.1 Geral
+O método frequentista baseia-se na teoria da frequência de eventos e usa métricas como **valor-p (p-value)** para determinar se há uma diferença estatisticamente significativa entre as versões testadas. Algumas características desse método:
 
-Tanto com spent como em purchases, vemos as distribuições dos dois grupos muito parecidas. Em spent temos o preenchimento automático com um valor um pouco menor nos Q3 e Q4.
+- Requer um **tamanho de amostra pré-definido**.
+- Não pode ser interrompido antes sem comprometer os resultados.
+- Baseia-se em testes tradicionais de hipótese para determinar significância estatística.
 
-Contudo, esses valores nos dão a primeira impressão de igualdade entre os valores dos grupos e que realmente somente um teste estatístico pode definir se um dos tipos é melhor que o outro.
+O método bayesiano usa probabilidade para atualizar crenças com base em novos dados, permitindo uma análise mais flexível. Algumas características desse método:
 
-<div align="center">
-<img src="img/4-geral.png" />
-</div>
+- Não exige um tamanho fixo de amostra, permitindo decisões mais rápidas.
+- Fornece uma **probabilidade direta** de uma variação ser melhor que a outra, tornando a interpretação mais intuitiva.
+- Permite uma abordagem **mais adaptável e contínua** na tomada de decisão.
 
-## 4.2 Dividido por País
+Dessa forma temos:
 
-Essa igualdade se mantém ao analisarmos por país.
+| Método           | Características                                                                               |
+| ---------------- | --------------------------------------------------------------------------------------------- |
+| **Frequentista** | Análise rígida, requer tamanho de amostra fixo, usa p-value para decisão.                     |
+| **Bayesiano**    | Análise flexível, não exige tamanho fixo de amostra, fornece probabilidade direta de sucesso. |
 
-Em spent as distribuições são em ESP, DEU e AUS (Espanha, Alemanha e Austrália respectivamente). Dessa forma, na Espanha temos uma impressão do preenchimento automático ter funcionado melhor que o preenchimento manual, fazendo os usuário gastarem mais devido a isso.
+O método **frequentista** é mais tradicional e baseado em testes estatísticos clássicos, enquanto o **bayesiano** é mais adaptável e permite decisões contínuas com base em novas informações. Assim, o mesmo conjunto de dados foi aplicado com ambos os testes com o intuito de exemplificar essa explicação.
 
-O contrário pode ser dito para Austrália, com superioridade nos valores do preenchimento manual.
+## 4.1 Frequentista
 
-<div align="center">
-<img src="img/4-spent-country.png" />
-</div>
-
-Em purchases apenas Espanha (ESP) mostra uma diferença na distribuição, e mesmo assim apenas nos valores do Q1.
-
-<div align="center">
-<img src="img/4-purchases-country.png" />
-</div>
-
-## 4.3 Dividido por Device
-
-Em purchases vemos uma distribuição praticamente igual entre os grupos e em ambos os devices. O cenário muda um pouco em spent, onde os valores do preenchimento automático perecem levemente menor que o do preenchimento manual.
+Dessa forma, aplicando um conjunto de dados com quantidade de visitas e cliques em duas páginas, em um Teste A/B com o intuito de descobrir qual página apresenta maior conversão. Podemos observar o seguinte resultado com o teste Frequentista.
 
 <div align="center">
-<img src="img/4-device.png" />
+<img src="img/1-freq.png" />
 </div>
 
-## 4.4 Dividido por Gênero
+No gráfico da esquerda em cima é possível observar que desde os primeiros dias o CTR da página B é levemente maior que o CTR da página A e com o passar dos dias, essa diferença aumenta.
+E corroborando com isso, vemos no gráfico da esquerda embaixo que se somassemos o CTR das duas páginas, o da página B continua levemente maior que o da página A.
 
-Por gênero a diferença na distribuição é ainda menor, onde apenas para o gênero feminino em spent parece ter uma distribuição levemente mais baixa que para o preenchimento automático.
+Contudo, a diferença entre os CTRs da páginas não é gritante e por isso, para definir qual página é melhor, o foi aplicado e para a avaliação observamos o p-valor que é mostrado no gráfico da direita.
+Observa-se que o p-valor é bem alto nos primeiros dias, devido a pouca quantidade de dados que temos até o dia em questão, juntamento com o fato da diferença entre as conversões ser relatividamente pequena.
 
-Isso pode nos mostrar uma pequena influência dessa feature no resultado do teste de hipóteses.
+Até o dia 58 não era possível tirar uma conclusão, mesmo que o CTR da página B fosse maior que a da página A, não haviam amostras o suficiente para provar que isso era estatísticamente significativo. A partir desse dia, observa-se que o p-valor se estabelece como menor que 0,05. Assim, **levando 58 dias para provar que a página B apresenta maior conversão que a página A**.
+
+## 4.2 Bayesiano
+
+Podemos observar o seguinte resultado com o teste Bayesiano.
 
 <div align="center">
-<img src="img/4-genero.png" />
+<img src="img/1-bay.png" />
 </div>
+
+Ao invés de trabalhar com o p-valor, trabalhamos com a probabilidade do CTR de B ser maior do que de A e com o erro atrelado a fazer essa escolha.
+
+Observando o gráfico da esquerda, vemos que desde o início a probabilidade de B ser maior do que A é maior que a probabilidade de A ser maior que B. Contudo, a partir do dia 20, a probabilidade de B ser maior que A passa pela primeira vez dos 90%.
+
+Ao mesmo tempo, no gráfico da direita é possível ver o erro atrelado a fazer essa escolha. E no dia 20 é visível que já faziam 3 dias que o erro atrelado ao escolher B era menor que 0,0001. Isso nao significa que não há chances de A ser melhor, contudo, seria muito difícil isso acontecer. Assim, **como a probabilidade de B ser maior que A passa de 90% e o erro atrelado ao fazer essa escolha é menor que o treshold definido, podemos escolher a página B como melhor que a A**.
+
+Importante ressaltar que isso não prova que a **conversão da página B é estatistamente maior que a conversão da página B**. Entretanto, os dados mostram que a **chance disso acontecer são muito altas**. Assim, com o método Bayesiano a decisão foi tomada no dia 20, **38 dias a menos que o método frequentista**, e isso pode significar que a empresa poderia mostrar o melhor site nesse período e com isso **otimizar o seu ganho**.
 
 # 5. Teste Bayesiano
 
-A seguir daremos definições dos parâmetros e quais valores foram usados.
+## 5.1 Planejamento do teste
+
+## 5.2 Resultados
 
 # 6. Multi Armed Bandit
 

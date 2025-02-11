@@ -21,6 +21,7 @@ for click in range(clicks):
         'name', 'yescheckbox').get_attribute('value')
 
     if button_color == 'blue':
+        np.random.seed(42)
         if np.random.random() < 0.30:
             driver.find_element('name', 'yescheckbox').click()
             driver.find_element('id', 'yesbtn').click()
@@ -31,6 +32,7 @@ for click in range(clicks):
             # time.sleep(0.2)
 
     else:
+        np.random.seed(42)
         if np.random.random() < 0.40:
             driver.find_element('name', 'yescheckbox').click()
             driver.find_element('id', 'yesbtn').click()
