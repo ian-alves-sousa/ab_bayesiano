@@ -175,42 +175,104 @@ Importante ressaltar que isso não prova que a **conversão da página B é esta
 
 # 5. Teste Bayesiano
 
+Esse tipo de teste de hipótese é usado principalmente quando o tempo para tomar decisão é o menor possível. Dessa forma, é interessante acompanhar as métricas em tempo real.
+
+Para exemplificar isso duas páginas foram criadas e simulamos visitantes entrando nas páginas e clicando (ou não) nos botões. Com isso foi possível medir as conversões e observar o comportamento dos dados com o passar dos dias.
+
 ## 5.1 Planejamento do teste
+
+O seguinte planejamento foi feito.
+
+<div align="center">
+<img src="img/esquema_bayesiano.jpeg" />
+</div>
+
+Assim, primeiro as páginas foram criadas de forma simples, com a intenção de simular páginas diferentes em um Teste AB.
+
+<div align="center">
+<img src="img/páginas.png" />
+</div>
+
+Onde a página com o botão vermelho é o grupo de tratamento e a página com o botão azul é o grupo controle.
+
+Assim, utilizando o **chromedriver**, dois visitantes foram criados. A função deles é entrar cada um em um página e simular o clique nno botão de Sim ou de Não. Com a criação desses visitantes foi definida a probabilidade deles entrarem na página e clicarem no botão de Sim. Para a página tratamento (B) a probabilidade é de 40% e para a página controle (A) a probabilidade é de 30%.
+
+Assim, os visitantes com as suas probabilidades definidas entram na página e clicam nos botões. Isso irá alimentar um dataset, que será usado como entrada para os arquivos de análise, que mostrarão como está o CTR por página e a probabilidade de escolher uma página em relação a outra.
 
 ## 5.2 Resultados
 
+Com esse esquemático aplicado, os arquivos foram criados e o teste foi realizado, a imagem a seguir apresenta o resultado dos arquivos de análise.
+
+<div align="center">
+<img src="img/result_bay.png" />
+</div>
+
+O interessante dessa aplicação foi ver o gráfico sendo construído enquanto as páginas recebiam seus cliques. E como resultado vemos no gráfico da esquerda que desde o início a conversão da página de tratamento foi maior que o da página controle, sendo até maior que o 40% definido inicialmente, contudo, com o passar do tempo, os valores foram convergindo para as probabilidades definidas nas páginas.
+
+No gráfico da direita observamos que aproximadamente a partir da interação de número 160, a probabilidade da página de tratamento ser melhor que a página controle era maior que 90%. Além disso, nesse ponto, o risco atrelado em escolher a página A era ínfimo. O que indica que com 160 interações essa decisão já poderia ser tomada. E o que prova que essa decisão seria a correta é que até a interação de número 600 a probabilidade de B ser melhor que A chegou em 100%.
+
+Portanto, esse projeto mostra como o mesmo teste bayesiano foi rápido em ajudar a tomar a decisão e quando aplicado em um negócio real pode trazer real ganho com essa tomada de decisão rápida.
+
 # 6. Multi Armed Bandit
 
-A seguir daremos definições dos parâmetros e quais valores foram usados.
+O Multi-Armed Bandit (MAB) é uma abordagem de experimentação que equilibra exploração (testar diferentes opções) e exploitation (aproveitar a melhor opção conhecida). Diferente do teste A/B tradicional, onde o tráfego é fixo entre variantes, o MAB ajusta dinamicamente a alocação com base no desempenho de cada opção.
+
+No Teste A/B Bayesiano, utilizamos distribuições probabilísticas (como a distribuição Beta) para modelar a incerteza sobre cada variante. Ao combinar isso com MAB, podemos atualizar as probabilidades conforme novos dados chegam, permitindo que a melhor alternativa receba mais tráfego progressivamente.
+
+## 6.1 Planejamento do teste
+
+O seguinte planejamento foi feito.
+
+<div align="center">
+<img src="img/esquema_mab.jpeg" />
+</div>
+
+Diferentemente do esquema usado no teste bayesiano, o esquema para a utilização do MAB usa apenas um visitante, que continua clicando nos botões de cada página com as mesmas probabilidades definidas anteriormente.
+
+Contudo, para a amostragem da página há uma nova lógica, uma política de amostragem, que tem o papel de identificar qual página tem a probabilidade de ser melhor que a outra utilizando os dados atuais, e com isso otimizar a amostragem da página, apresentando ao usuário mais vezes aquela que é melhor. Essa política ainda mostra a página com probabilidade de ser menor e continua coletando os dados para realizar esse cálculo, até o momento que uma página tem amostras o suficiente para mostrar que é melhor que a concorrente.
+
+Nesse projeto as mesmas páginas são usadas, assim como o mesmo arquivo para armazenar os dados. Contudo, apenas um visitante é necessário, visto que uma página estará amostra por vez
+
+## 6.2 Resultados
+
+Com esse esquemático aplicado, os arquivos foram criados e o teste foi realizado, a imagem a seguir apresenta o resultado dos arquivos de análise.
+
+<div align="center">
+<img src="img/result_mab.png" />
+</div>
+
+Com as mesmas probabilidades aplicadas para os cliques das páginas, era esperado que com a utilização do MAB a página de tratamento fosse mais amostrada do que a página controle. E através do gráfico da esquerda podemos observar esse comportamento, onde a página controle foi amostrada menos de 100 vezes, enquanto a página tratamento apresentou quase 800 interações.
+
+No gráfico da direita vemos que a probabilidade da página de tratamento ser melhor que a página controle passou de 90% próximo à 400 interações, mais do que a do teste Bayesiano aplicado anteriormente. Contudo, no teste anterior, seria necessário pelo menos 160 interações na página controle para tomar essa decisão, com a utilização do MAB e otimização automática da amostragem das páginas, a pior página foi apresentada ao cliente menos de 100 vezes.
+
+Portanto, esse projeto mostra como a utilização do MAB com o teste AB bayesiano pode otimizar não apenas a tomada de decisão de sair da fase de exploração para tomar a decisão de qual página é melhor, mas de fazer essa mudança na amostragem de forma gradual e coerente com os resultados encontrados.
 
 # 7. Resultados de Negócio
 
 Respondendo as perguntas de negócio:
 
-**Qual a melhor forma de pagamento: Preenchimento Manual ou Automático do formulário de dados do cartão de crédito?**
+**- A nova página apresenta uma conversão maior ou pior que a página atual?**<br>
+**A resposta precisa vir o mais rápido possível (menos de 7 dias).**
 
-Através do teste de hipóteses podemos provar que apesar de uma boa ideia, o Preenchimento Manual continua sendo a melhor forma para preencher os dados de cartão de crédito. Observamos que a média de valor gasto com compras nesse tipo de preenchiemnto é 10% maior que a média do valor gasto no preenchimento manual.
+A página que apresenta a maior conversão é a página de tratamento. Contudo, essa tomada de decisão foi feita de forma mais rápida do que seria em um Teste AB Frequentista, devido a utilização do Teste AB Bayesiano, onde foi visto que a probabiliade da página de tratamento ser melhor que a página atual foi maior desde o começo. Assim, a decisão pôde ser tomada de forma rápida com a ideia de otimizar o ganho através das páginas.
 
-Com isso, a hipótese é que esse novo tipo de preenchimento não foi bem recebido pelos usuários, para saber exatamento o motivo seria interessante fazer um teste de usuabilidade.
-
-Além disso, descobrimos que variáveis como gênero e device não influenciam na média de valor gasto e de compras para ambos os tipos de preenchimento.
-
-Por fim, em alguns lugares observamos uma preferência no tipo de preenchimento, como no México, que apresentou média de valor gasto 10% maior no preenchimento automático. Em contrapartida, na França de encontram os principais ofensores so novo tipo de preenchimento, onde a média de valor gasto de de compras é 10% menor no novo método.
+Além disso, utilizando o MAB foi possível fazer ainda melhor. Com o Multi-Armed Bandit com a política do Thompson Agent foi possível aplicar a lógica do Teste AB Bayesiano no próprio sistema de amostragem das páginas, fazendo com que a página com melhor conversão fosse mostrada mais vezes desde o início, otimizando o ganho da página mesmo antes de tomar a decisão de qual página é melhor.
 
 # 8. Conclusão
 
-Nesse projeto, foram realizadas todas as etapas necessárias para a implementação de um projeto completo de Data Science focado na utilização do Teste A/B. Foi utilizado o método de gerenciamento de projeto chamado CRISP-DM/DS e obteve-se um desempenho satisfatório em compreender a utilização do teste A/B e aplicar em um problema real.
+Nesse projeto, foram realizadas todas as etapas necessárias para a implementação de um projeto completo de Data Science focado na utilização do Teste A/B. Foi utilizado o método de gerenciamento de projeto chamado CRISP-DM/DS e obteve-se um desempenho satisfatório em compreender a utilização do teste A/B Bayesiano e aplicar em um problema real.
 
-Tendo em vista os resultados, o projeto alcançou seu objetivo de fazer o teste e provar para a empresa de forma estatística que o nov tipo de preenchimento não foi o esperado.
+Tendo em vista os resultados, o projeto alcançou seu objetivo de provar que há formas mais rápidas de tomar a decisão do que utilizando o Teste A/B Frequentista e que isso pode ser muito útil para o negócio.
 
 # 9. Aprendizados e Trabalhos Futuros
 
 **Aprendizados**
 
-- Compreensão e aplicação do Teste A/B com médias.
-- Conceitos estatísticos e parâmetros com teste de hipóteses.
+- Compreensão e aplicação do Teste A/B Bayesiano.
+- Compreensão e aplicação do MAB e seus agentes.
+- Compreensão e aplicação de conceitos de raspagem de dados.
 
 **Trabalhos Futuros**
 
-- Aprofundar na análise do que influencia mais na compra ao invés do preenchimento do formulário.
-- Aplicar os testes nos páises com divergências maiores, segregando ainda mais, como com device e gênero.
+- Fazer um vídeo mostrando as mudanças nos gráficos de análise conforme os cliques vão acontecendo.
+- Coletar datasets de Test A/B e aplicar ambos os testes para provar suas diferenças em outros tipos de negócio.

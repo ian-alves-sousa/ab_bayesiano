@@ -12,7 +12,7 @@ def index():
 
 @app.route('/yes', methods=['POST'])
 def yes_event():
-    df = pd.read_csv("../data/data_experiment.csv")
+    df = pd.read_csv("../data/data_experiment.csv", delimiter=",")
     click = 1
     visit = 1
     group = 'treatment'
@@ -26,7 +26,7 @@ def yes_event():
 
 @app.route('/no', methods=['POST'])
 def no_event():
-    df = pd.read_csv("../data/data_experiment.csv")
+    df = pd.read_csv("../data/data_experiment.csv", delimiter=",")
     click = 0
     visit = 1
     group = 'treatment'
