@@ -6,11 +6,11 @@
 
 # Introdução
 
-Esse é um projeto end-to-end de Data Science, focado na especilização com Teste A/B. No qual identificamos qual página apresenta maior sucesso na captura de leads, trazendo essa resposta no menor tempo possível. Para isso o teste A/B Bayesiano foi utilizado, juntamento com concieto do Multi Armed Bandit.
+Esse é um projeto end-to-end de Data Science, focado na especialização com Teste A/B. No qual identificamos qual página apresenta maior sucesso na captura de leads, trazendo essa resposta no menor tempo possível. Para isso o teste A/B Bayesiano foi utilizado, juntamento com conceito do Multi Armed Bandit.
 
 O conjunto de dados para esse estudo será criado de forma sintética.
 
-Esse projeto faz parte da "Comunidade DS", que é um ambiente de estudo que promove o aprendizado, execução, e discussão de projetos de Data Science.
+Esse projeto faz parte da 'Comunidade DS', um ambiente de estudo que promove aprendizado, execução e discussão de projetos de Data Science.
 
 ### Plano de Desenvolvimento do Projeto de Data Science
 
@@ -63,7 +63,7 @@ O time de Cientistas de Dados da iSketch foi acionando com a missão de testar a
 
 ### 1.2 Problema de Negócio
 
-O papel do Cientista de Dados foi ajudar no projeto de validação do novo layout da página, junto com o time de Marketing, a fim de ajudar a avaliação da nova página e captura. O entregal é responder a seguinte pergunta:
+O papel do Cientista de Dados foi ajudar no projeto de validação do novo layout da página, junto com o time de Marketing, a fim de ajudar a avaliação da nova página e captura. O entregável é responder a seguinte pergunta:
 
 **- A nova página apresenta uma conversão maior ou pior que a página atual?**<br>
 **A resposta precisa vir o mais rápido possível (menos de 7 dias).**
